@@ -48,7 +48,7 @@ nlmax=2*rnside-1
 #### downgrading the realistic emissivity maps ###
 ##################################################
 
-alpha= hp.read_map('input_sim_emissivity/Data_LVC_Emissivity_HMC_f353_ns512_rns32_CMB_SUBTRACTED_PIPXVII.fits',field=None,verbose=None,nest=False)
+alpha= hp.read_map('input_sim_emissivity/Data_LVC_Emissivity_HMC_f353_ns512_rns32_CMB_SUBTRACTED_PIPXVII.fits',field=None,nest=False)
 alpha= hp.ud_grade(alpha,nside_out=rnside,order_in='RING', order_out="NESTED")
 alpha= alpha*(freq*1./353.)**(1.5)*planck_bnu(freq,20.)/planck_bnu(353,20.)
 
@@ -60,7 +60,7 @@ ell, cl= np.loadtxt(cibdir+'CIB_model_Planck14_XXX_%dGHz.txt' %(freq), usecols=(
 cl=cl*1e-12 #MJySr^-1
 cl[0:2]=0.
 
-cib=hp.synfast(cl, nside, lmax=None, mmax=None, pol=False, pixwin=True, fwhm=np.radians(16.2/60.), verbose=False)
+cib=hp.synfast(cl, nside, lmax=None, mmax=None, pol=False, pixwin=True, fwhm=np.radians(16.2/60.))
 cib=hp.reorder(cib,r2n=True)
 
 #if(noisety == 'IIcibHII'):
@@ -71,12 +71,12 @@ cib=hp.reorder(cib,r2n=True)
 #        if(freq==857): cl_g=1.9e-3*ell**(-2.4)
 #        cl_g[0]=0.
 #        cl_g[1]=0.
-#        residual_g=hp.synfast(cl_g, nside, lmax=None, mmax=None, pol=False, pixwin=True, fwhm=np.radians(16.2/60.), verbose=False)
+#        residual_g=hp.synfast(cl_g, nside, lmax=None, mmax=None, pol=False, pixwin=True, fwhm=np.radians(16.2/60.))
 #        residual_g=hp.reorder(residual_g,r2n=True)
 
 
 ### mask file #####
-mask=hp.read_map(maskdir+'mask_PIPXVII.fits',nest=True,field=None,verbose=None)
+mask=hp.read_map(maskdir+'mask_PIPXVII.fits',nest=True,field=None)
 if(np.size(mask) !=npix):
         mask=hp.ud_grade(mask,nside_out=nside,order_in='NESTED', order_out="NESTED")
         ind=np.where(mask <= 0.9)
@@ -84,7 +84,7 @@ if(np.size(mask) !=npix):
         ind=np.where(mask > 0.9)
         mask[ind]=1.0
 
-lvc = hp.read_map(inputpath + 'GASS_512_ring_local.fits',field=None,verbose=None,nest=True)
+lvc = hp.read_map(inputpath + 'GASS_512_ring_local.fits',field=None,nest=True)
 if(np.size(mask) !=npix): lvc=hp.ud_grade(lvc,nside_out=nside,order_in='NESTED', order_out="NESTED")
 pixid=np.where(lvc >= nhi_cut)
 mask[pixid]=0.0
@@ -111,7 +111,7 @@ HIresCl[1] = 0.0 #dipole is also kept zero
 #########################
 ## galactic residuals realization maps #####
 ##########################
-map_tmp=hp.synfast(HIresCl, nside, lmax=3*nside-1, pixwin=True, fwhm=np.radians(16.2/60), verbose=False)
+map_tmp=hp.synfast(HIresCl, nside, lmax=3*nside-1, pixwin=True, fwhm=np.radians(16.2/60))
 map_tmp=hp.reorder(map_tmp,r2n=True)
 residual_g =map_tmp*lvc**0.8*np.sqrt(1.e-3/0.0033)
 

@@ -39,7 +39,7 @@ rnpix=hp.nside2npix(rnside)
 indexing=int((nside/rnside)**2)
 
 ### mask file #####
-mask=hp.read_map(maskdir+'mask_PIPXVII_nhi_%s.fits' %(nhi_label),nest=True,field=None,verbose=None)
+mask=hp.read_map(maskdir+'mask_PIPXVII_nhi_%s.fits' %(nhi_label),nest=True,field=None)
 
 index=[]
 ind=[]
