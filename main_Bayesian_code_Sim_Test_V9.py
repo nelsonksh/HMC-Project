@@ -188,24 +188,21 @@ for j in range(np.size(index)):
 
 def Hamiltonian(p_alpha,p_beta,p_alpha_star,p_beta_star,alpha,beta,alpha_star,beta_star):
 
-        KE=0
-        PE=0
-        KE1=0.
-        PE1=0.
-        chi2=0.
+    PE=0
+    PE1=0.
+    chi2=0.
 
-        for j in range(np.size(m_alpha,axis=0)):                        
-                KE=KE + p_alpha[j]**2/m_alpha[j]
-                KE1=KE1 + p_alpha_star[j]**2/m_alpha[j]
-                shi= (Isim[ind[j]]- beta - alpha[j]*NHI[ind[j]])
-                shi1= (Isim[ind[j]]- beta_star - alpha_star[j]*NHI[ind[j]])
-                PE=PE + np.dot(shi,np.dot(inv_cov[j],shi))
-                PE1=PE1 + np.dot(shi1,np.dot(inv_cov[j],shi1))
-                chi2=chi2 + (np.dot(shi,np.dot(inv_cov[j],shi))/np.shape(inv_cov[j])[0])
+    for j in range(np.size(m_alpha,axis=0)):
+        shi= (Isim[ind[j]]- beta - alpha[j]*NHI[ind[j]])
+        shi1= (Isim[ind[j]]- beta_star - alpha_star[j]*NHI[ind[j]])
+        PE=PE + np.dot(shi,np.dot(inv_cov[j],shi))
+        PE1=PE1 + np.dot(shi1,np.dot(inv_cov[j],shi1))
+        chi2=chi2 + (np.dot(shi,np.dot(inv_cov[j],shi))/np.shape(inv_cov[j])[0])
 
-
-        H=0.5*(KE1+PE1) - 0.5*(KE+PE)
-        return(H, chi2)
+    KE = p_beta**2/m_beta + np.sum(p_alpha**2/m_alpha)
+    KE1 = p_beta_star**2/m_beta + np.sum(p_alpha_star**2/m_alpha)
+    H=0.5*(KE1+PE1) - 0.5*(KE+PE)
+    return(H, chi2)
 
 
 ##########################
